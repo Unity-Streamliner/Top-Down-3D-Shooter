@@ -6,22 +6,47 @@ using UnityEngine.InputSystem;
 public class PlayerMovement : MonoBehaviour
 {
     private PlayerActions _playerActions;
-    public Vector2 moveInput;
-    public Vector2 aimInput;
+    private CharacterController _characterController;
+    private Vector2 _moveInput;
+    private Vector2 _aimInput;
+    private Vector3 movementDirection;
+
+    [Header("Movement info")]
+    [SerializeField]
+    private float walkSpeed;
 
     private void Awake()
     {
         _playerActions = new PlayerActions();
 
         _playerActions.Character.Movement.performed += context => 
-            moveInput = context.ReadValue<Vector2>();
+            _moveInput = context.ReadValue<Vector2>();
         _playerActions.Character.Movement.canceled += context =>
-            moveInput = Vector2.zero;
+            _moveInput = Vector2.zero;
 
         _playerActions.Character.Aim.performed += context =>
-            aimInput = context.ReadValue<Vector2>();
+            _aimInput = context.ReadValue<Vector2>();
         _playerActions.Character.Aim.canceled += context =>
-            aimInput = Vector2.zero;
+            _aimInput = Vector2.zero;
+    }
+
+    private void Start()
+    {
+        _characterController = GetComponent<CharacterController>();
+    }
+
+    private void Update()
+    {
+        ApplyMovement();
+    }
+
+    private void ApplyMovement()
+    {
+        movementDirection = new Vector3(_moveInput.x, 0, _moveInput.y);
+        if (movementDirection.magnitude > 0)
+        {
+            _characterController.Move(movementDirection * walkSpeed * Time.deltaTime);
+        }
     }
 
     private void OnEnable()
