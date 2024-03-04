@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -9,7 +6,10 @@ public class PlayerMovement : MonoBehaviour
     private CharacterController _characterController;
     private Vector2 _moveInput;
     private Vector2 _aimInput;
-    private Vector3 movementDirection;
+    private Vector3 _movementDirection;
+    private float _gravityForce = 9.81f;
+
+    private float _verticalVelocity;
 
     [Header("Movement info")]
     [SerializeField]
@@ -42,10 +42,24 @@ public class PlayerMovement : MonoBehaviour
 
     private void ApplyMovement()
     {
-        movementDirection = new Vector3(_moveInput.x, 0, _moveInput.y);
-        if (movementDirection.magnitude > 0)
+        _movementDirection = new Vector3(_moveInput.x, 0, _moveInput.y);
+        ApplyGravity();
+        if (_movementDirection.magnitude > 0)
         {
-            _characterController.Move(movementDirection * walkSpeed * Time.deltaTime);
+            _characterController.Move(_movementDirection * walkSpeed * Time.deltaTime);
+        }
+    }
+
+    private void ApplyGravity()
+    {
+        if(!_characterController.isGrounded)
+        {
+            _verticalVelocity -= _gravityForce * Time.deltaTime;
+            _movementDirection.y = _verticalVelocity;
+        }
+        else 
+        {
+            _verticalVelocity = -.5f;
         }
     }
 
