@@ -14,6 +14,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private float walkSpeed;
 
+    private Animator _animator;
+
     private void Awake()
     {
         _playerActions = new PlayerActions();
@@ -27,11 +29,22 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         _characterController = GetComponent<CharacterController>();
+        _animator = GetComponentInChildren<Animator>();
     }
 
     private void Update()
     {
         ApplyMovement();
+        Animations();
+    }
+
+    private void Animations()
+    {
+        float xVelocity = Vector3.Dot(_movementDirection.normalized, transform.right);
+        float zVelocity = Vector3.Dot(_movementDirection.normalized, transform.forward);
+
+        _animator.SetFloat("xVelocity", xVelocity, .1f, Time.deltaTime);
+        _animator.SetFloat("zVelocity", zVelocity, .1f, Time.deltaTime);
     }
 
     private void ApplyMovement()
@@ -40,7 +53,7 @@ public class PlayerMovement : MonoBehaviour
         ApplyGravity();
         if (_movementDirection.magnitude > 0)
         {
-            _characterController.Move(_movementDirection * walkSpeed * Time.deltaTime);
+            _characterController.Move(Time.deltaTime * walkSpeed * _movementDirection);
         }
     }
 
