@@ -7,9 +7,9 @@ public class PlayerShooting : MonoBehaviour
     private Vector2 _aimInput;
 
     [Header("Aim info")]
-    [SerializeField]
-    private LayerMask _aimLayerMask;
+    [SerializeField] private LayerMask _aimLayerMask;
     private Vector3 _lookingDirection;
+    [SerializeField] private Transform _aim;
 
     private void Awake()
     {
@@ -36,6 +36,8 @@ public class PlayerShooting : MonoBehaviour
             _lookingDirection.Normalize();
 
             transform.forward = _lookingDirection;
+
+            _aim.position = new Vector3(hitInfo.point.x, transform.position.y, hitInfo.point.z);
         }
     }
 
