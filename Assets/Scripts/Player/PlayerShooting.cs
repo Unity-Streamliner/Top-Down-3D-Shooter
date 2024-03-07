@@ -11,6 +11,8 @@ public class PlayerShooting : MonoBehaviour
     private Vector3 _lookingDirection;
     [SerializeField] private Transform _aim;
 
+    private Animator _animator;
+
     private void Awake()
     {
         _playerActions = new PlayerActions();
@@ -19,6 +21,13 @@ public class PlayerShooting : MonoBehaviour
             _aimInput = context.ReadValue<Vector2>();
         _playerActions.Character.Aim.canceled += context =>
             _aimInput = Vector2.zero;
+
+        _playerActions.Character.Fire.performed += context => Shoot();
+    }
+
+    private void Start()
+    {
+        _animator = GetComponentInChildren<Animator>();
     }
 
     private void Update()
@@ -39,6 +48,12 @@ public class PlayerShooting : MonoBehaviour
 
             _aim.position = new Vector3(hitInfo.point.x, transform.position.y, hitInfo.point.z);
         }
+    }
+
+    private void Shoot()
+    {
+        Debug.Log("Shooting");
+        _animator.SetTrigger("Fire");
     }
 
     private void OnEnable()
