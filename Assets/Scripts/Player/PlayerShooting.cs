@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerShooting : MonoBehaviour
 {
-    private PlayerActions _playerActions;
+    private Player _player;
     private Vector2 _aimInput;
 
     [Header("Aim info")]
@@ -13,21 +13,11 @@ public class PlayerShooting : MonoBehaviour
 
     private Animator _animator;
 
-    private void Awake()
-    {
-        _playerActions = new PlayerActions();
-
-        _playerActions.Character.Aim.performed += context =>
-            _aimInput = context.ReadValue<Vector2>();
-        _playerActions.Character.Aim.canceled += context =>
-            _aimInput = Vector2.zero;
-
-        _playerActions.Character.Fire.performed += context => Shoot();
-    }
-
     private void Start()
     {
         _animator = GetComponentInChildren<Animator>();
+        _player = GetComponent<Player>();
+         AssignInputActions();
     }
 
     private void Update()
@@ -56,13 +46,16 @@ public class PlayerShooting : MonoBehaviour
         _animator.SetTrigger("Fire");
     }
 
-    private void OnEnable()
+    private void AssignInputActions()
     {
-        _playerActions.Enable();
-    }
+        PlayerActions playerActions = _player.actions;
 
-    private void OnDisable()
-    {
-        _playerActions.Disable();
+        playerActions.Character.Aim.performed += context =>
+            _aimInput = context.ReadValue<Vector2>();
+        playerActions.Character.Aim.canceled += context =>
+            _aimInput = Vector2.zero;
+
+        playerActions.Character.Fire.performed += context => Shoot();
     }
+    
 }

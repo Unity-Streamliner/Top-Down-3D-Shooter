@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private PlayerActions _playerActions;
+    private Player _player;
     private CharacterController _characterController;
     private Vector2 _moveInput;
     private Vector3 _movementDirection;
@@ -18,15 +18,12 @@ public class PlayerMovement : MonoBehaviour
 
     private Animator _animator;
 
-    private void Awake()
-    {
-        AssignInputActions();
-    }
-
     private void Start()
     {
         _characterController = GetComponent<CharacterController>();
         _animator = GetComponentInChildren<Animator>();
+        _player = GetComponent<Player>();
+        AssignInputActions();
 
         _speed = _walkSpeed;
     }
@@ -71,34 +68,22 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    #region Input Actions
     private void AssignInputActions()
     {
-        _playerActions = new PlayerActions();
+        PlayerActions playerActions = _player.actions;
 
-        _playerActions.Character.Movement.performed += context => 
+        playerActions.Character.Movement.performed += context => 
             _moveInput = context.ReadValue<Vector2>();
-        _playerActions.Character.Movement.canceled += context =>
+        playerActions.Character.Movement.canceled += context =>
             _moveInput = Vector2.zero;
 
-        _playerActions.Character.Run.performed += context => {
+        playerActions.Character.Run.performed += context => {
             _speed = _runSpeed;
             _isRunning = true;
         };
-        _playerActions.Character.Run.canceled += context => {
+        playerActions.Character.Run.canceled += context => {
             _speed = _walkSpeed;
             _isRunning = false;
         };
     }
-
-    private void OnEnable()
-    {
-        _playerActions.Enable();
-    }
-
-    private void OnDisable()
-    {
-        _playerActions.Disable();
-    }
-    #endregion
 }
