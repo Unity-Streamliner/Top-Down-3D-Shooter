@@ -1,23 +1,31 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class PlayerShooting : MonoBehaviour
 {
     private Player _player;
     private Vector2 _aimInput;
+    private WeaponActions _weaponActions;
 
     [Header("Aim info")]
     [SerializeField] private LayerMask _aimLayerMask;
     private Vector3 _lookingDirection;
     [SerializeField] private Transform _aim;
 
+    WeaponController _weaponController;
+
     private Animator _animator;
+
+    private void Awake()
+    {
+        _weaponActions = new WeaponActions();
+    }
 
     private void Start()
     {
         _animator = GetComponentInChildren<Animator>();
         _player = GetComponent<Player>();
-         AssignInputActions();
+        _weaponController = GetComponentInChildren<WeaponController>();
+        AssignInputActions();
     }
 
     private void Update()
@@ -46,6 +54,11 @@ public class PlayerShooting : MonoBehaviour
         _animator.SetTrigger("Fire");
     }
 
+    private void ChangeWeapon(int weaponIndex)
+    {
+        _weaponController.SwitchWeapon(weaponIndex);
+    }
+
     private void AssignInputActions()
     {
         PlayerActions playerActions = _player.actions;
@@ -56,6 +69,22 @@ public class PlayerShooting : MonoBehaviour
             _aimInput = Vector2.zero;
 
         playerActions.Character.Fire.performed += context => Shoot();
+
+        _weaponActions.Weapon.Pistol.performed += context => ChangeWeapon(0);
+        _weaponActions.Weapon.Revolver.performed += context => ChangeWeapon(1);
+        _weaponActions.Weapon.Rifle.performed += context => ChangeWeapon(2);
+        _weaponActions.Weapon.Shotgun.performed += context => ChangeWeapon(3);
+        _weaponActions.Weapon.Sniper.performed += context => ChangeWeapon(4);
+    }
+
+    private void OnEnable()
+    {
+       _weaponActions.Enable();
+    }
+
+    private void OnDisable()
+    {
+        _weaponActions.Disable();
     }
     
 }
