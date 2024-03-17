@@ -4,9 +4,15 @@ public class WeaponController : MonoBehaviour
 {
     [SerializeField] private Transform[] _weapons;
     private Transform _currentWeapon;
+    Animator _animator;
 
     [Header("Left Hand IK")]
     [SerializeField] private Transform _leftHand;
+
+    private void Awake()
+    {
+        _animator = GetComponentInParent<Animator>();
+    } 
 
     private void Start()
     {
@@ -23,6 +29,7 @@ public class WeaponController : MonoBehaviour
                 _currentWeapon = _weapons[i];
                 _currentWeapon.gameObject.SetActive(true);
                 AttachWeaponToHand();
+                SwitchAnimationLayer(i == 3 ? 2 : i == 4 ? 3 : 1);
             }
             else
             {
@@ -35,6 +42,16 @@ public class WeaponController : MonoBehaviour
     {
         Transform targetTransform = _currentWeapon.GetComponentInChildren<LeftHandTargetTransform>().transform;
         _leftHand.SetLocalPositionAndRotation(targetTransform.localPosition, targetTransform.localRotation);
+    }
+
+    private void SwitchAnimationLayer(int layerIndex)
+    {
+        for (int i = 1; i < _animator.layerCount; i++)
+        {
+            _animator.SetLayerWeight(i, 0);
+        }
+        print("Layer index: " + layerIndex);
+        _animator.SetLayerWeight(layerIndex, 1);
     }
 }
 
