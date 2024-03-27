@@ -417,31 +417,31 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: xVelocity
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: zVelocity
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: isRunning
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Reload
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -478,6 +478,9 @@ AnimatorController:
     - serializedVersion: 2
       m_State: {fileID: -9090154969988131060}
       m_Motion: {fileID: -203655887218126122, guid: 84b82b00571094003b842e2acef9c055, type: 3}
+    - serializedVersion: 2
+      m_State: {fileID: -6236490571757178144}
+      m_Motion: {fileID: 7400000, guid: d865dae2ca3dd4fdface94d6f4500c04, type: 2}
     m_Behaviours: []
     m_BlendingMode: 0
     m_SyncedLayerIndex: 1
@@ -496,6 +499,9 @@ AnimatorController:
     - serializedVersion: 2
       m_State: {fileID: -9090154969988131060}
       m_Motion: {fileID: -203655887218126122, guid: dbcae45a5ae8948dd973204948f57dc1, type: 3}
+    - serializedVersion: 2
+      m_State: {fileID: -6236490571757178144}
+      m_Motion: {fileID: 7400000, guid: d0b13f98dcacf41c491a0f56864b69d6, type: 2}
     m_Behaviours: []
     m_BlendingMode: 0
     m_SyncedLayerIndex: 1
