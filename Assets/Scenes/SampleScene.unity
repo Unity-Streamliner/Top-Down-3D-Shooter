@@ -1546,6 +1546,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 192
   _aim: {fileID: 928337089}
+  _rigIncreaseStep: 2.75
 --- !u!114 &849636051
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5437,6 +5438,7 @@ GameObject:
   - component: {fileID: 7839812142319220047}
   - component: {fileID: 7839812142319220049}
   - component: {fileID: 7839812142319220048}
+  - component: {fileID: 7839812142319220050}
   m_Layer: 0
   m_Name: Character Main
   m_TagString: Untagged
@@ -5581,6 +5583,18 @@ MonoBehaviour:
   - m_Rig: {fileID: 37008418}
     m_Active: 1
   m_Effectors: []
+--- !u!114 &7839812142319220050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7460014010076458996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17a4a76f705884448a82ba693f765a31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &7949636771387146954
 Transform:
   m_ObjectHideFlags: 0

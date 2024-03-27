@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
 public class PlayerShooting : MonoBehaviour
 {
@@ -15,6 +16,11 @@ public class PlayerShooting : MonoBehaviour
 
     private Animator _animator;
 
+    [Header("Rig")]
+    [SerializeField] private float _rigIncreaseStep;
+    private bool _rigShouldBeIncreased;
+    private Rig _rig;
+
     private void Awake()
     {
         _weaponActions = new WeaponActions();
@@ -23,6 +29,7 @@ public class PlayerShooting : MonoBehaviour
     private void Start()
     {
         _animator = GetComponentInChildren<Animator>();
+        _rig = GetComponentInChildren<Rig>();
         _player = GetComponent<Player>();
         _weaponController = GetComponentInChildren<WeaponController>();
         AssignInputActions();
@@ -31,6 +38,19 @@ public class PlayerShooting : MonoBehaviour
     private void Update()
     {
         Aiming();
+        CheckReturnRigWeightToOne();
+    }
+
+    private void CheckReturnRigWeightToOne()
+    {
+        if(_rigShouldBeIncreased)
+        {
+            _rig.weight += _rigIncreaseStep * Time.deltaTime;
+            if(_rig.weight >= 1f)
+            {
+                _rigShouldBeIncreased = false;
+            }
+        }
     }
 
     private void Aiming()
@@ -48,10 +68,19 @@ public class PlayerShooting : MonoBehaviour
         }
     }
 
+    public void ReturnRigWeightToOne() => _rigShouldBeIncreased = true;
+
     private void Shoot()
     {
         Debug.Log("Shooting");
         _animator.SetTrigger("Fire");
+    }
+
+    private void Reload()
+    {
+        Debug.Log("Reloading");
+        _animator.SetTrigger("Reload");
+        _rig.weight = 0f;
     }
 
     private void ChangeWeapon(int weaponIndex)
@@ -69,6 +98,7 @@ public class PlayerShooting : MonoBehaviour
             _aimInput = Vector2.zero;
 
         playerActions.Character.Fire.performed += context => Shoot();
+        playerActions.Character.Reload.performed += context => Reload();
 
         _weaponActions.Weapon.Pistol.performed += context => ChangeWeapon(0);
         _weaponActions.Weapon.Revolver.performed += context => ChangeWeapon(1);
